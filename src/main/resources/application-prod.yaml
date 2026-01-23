@@ -1,0 +1,6 @@
+server:
+  servlet:
+    context-path: /api-car-prod
+
+course:
+  name: ABB Tech Academy prod

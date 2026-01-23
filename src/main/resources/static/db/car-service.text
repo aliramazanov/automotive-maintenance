@@ -1,0 +1,132 @@
+✅ Database Description (Tables + Relations)
+1) brand
+Meaning: Stores car manufacturers/brands (example: BMW, Toyota).
+Main fields:
+
+id → primary key
+name → unique brand name
+country, founded_year → brand info
+trigger_column → auto-updated by trigger on UPDATE
+Relations:
+brand (1) → model (many)
+One brand can have many models.
+
+2) model
+Meaning: Stores car models under a brand (example: BMW X5, Toyota Corolla).
+Main fields:
+brand_id → FK to brand.id
+name, category → model info (SUV, Sedan, etc.)
+year_from, year_to → production range
+Relations:
+model (many) → brand (1) via brand_id
+model (1) → car (many)
+One model can have many car records.
+
+3) car
+Meaning: Stores individual car units (real cars).
+Each row is one car with VIN and registration number.
+Main fields:
+model_id → FK to model.id
+vin → car unique identifier (in real world should be unique)
+registration_number → plate number (should be unique in real world)
+mileage_km, production_year
+Relations:
+car (many) → model (1) via model_id
+car (1) → cardetails (1)
+Each car has one details record.
+car (many) ↔ feature (many) via car_feature
+car (1) → service_visit (many)
+A car can have many service visits.
+
+4) cardetails
+Meaning: Stores additional technical/registration details for a car.
+This is a 1-to-1 extension table for car.
+Main fields:
+car_id → FK to car.id + UNIQUE (ensures 1-1)
+engine_number, registration_code (unique), fuel_type, etc.
+Relations:
+cardetails (1) → car (1) via car_id
+One car has exactly one car details row.
+
+5) service_visit
+Meaning: Stores maintenance/service history for cars.
+Each row is one service visit.
+Main fields:
+car_id → FK to car.id
+service_date, odometer_km, service_type, notes
+Relations:
+service_visit (many) → car (1) via car_id
+service_visit (1) → service_part (many)
+A service visit can have many used parts.
+
+6) part
+Meaning: Stores spare parts catalog (example: oil filter, brake pads).
+Main fields:
+part_code, unit_price, brand, etc.
+Relations:
+part (1) → service_part (many)
+A part can be used in many service visits.
+
+7) service_part
+Meaning: Join table between service_visit and part.
+Represents which parts were used in a service visit and in what quantity.
+Main fields:
+service_id → FK to service_visit.id
+part_id → FK to part.id
+quantity
+Relations:
+service_part (many) → service_visit (1)
+service_part (many) → part (1)
+This creates a many-to-many relationship:
+✅ service_visit ↔ part
+
+8) feature
+Meaning: Stores car features (example: ABS, Sunroof, Bluetooth).
+Main fields:
+feature_id → unique external code
+name, category, description
+Relations:
+feature (many) ↔ car (many) via car_feature
+
+9) car_feature
+Meaning: Many-to-many join table between cars and features.
+Each row assigns one feature to one car.
+Main fields:
+car_id → FK to car.id
+feature_id → FK to feature.id
+PK (car_id, feature_id) prevents duplicates
+Relations:
+car (many) ↔ feature (many)
+
+✅ Trigger Description
+brand_before_update_trigger
+Whenever a row in brand is updated, the trigger automatically sets:
+trigger_column = 'UPDATED_AT_YYYY-MM-DD HH:MM:SS'
+This is useful for tracking when a brand row was last modified.
+
+✅ RBAC (Auth Tables) Description
+10) app_user
+Stores system users (login accounts).
+
+11) role
+Stores roles like Admin, Mechanic, Viewer.
+
+12) user_role
+Join table between app_user and role (many-to-many).
+
+13) permission
+Stores permissions (HTTP method + path + code).
+
+14) role_permission
+Join table between role and permission (many-to-many).
+
+Summary of Relations (Simple)
+
+Brand 1 → Many Models
+Model 1 → Many Cars
+Car 1 → 1 CarDetails
+Car 1 → Many ServiceVisits
+ServiceVisit Many ↔ Many Parts (via service_part)
+Car Many ↔ Many Features (via car_feature)
+User Many ↔ Many Roles
+Role Many ↔ Many Permissions
