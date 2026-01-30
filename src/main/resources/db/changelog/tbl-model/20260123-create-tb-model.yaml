@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-model
+      author: Ali Ramazanov
+      changes:
+        - createTable:
+            tableName: model
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                  autoIncrement: true
+                  incrementBy: 1
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: category
+                  type: varchar(255)
+
+              - column:
+                  name: year_from
+                  type: int
+
+              - column:
+                  name: year_to
+                  type: int
+
+              - column:
+                  name: brand_id
+                  type: int
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseColumnNames: brand_id
+            baseTableName: model
+            constraintName: fk_model_brand
+            referencedColumnNames: id
+            referencedTableName: brand

@@ -32,21 +32,21 @@ registration_number → plate number (should be unique in real world)
 mileage_km, production_year
 Relations:
 car (many) → model (1) via model_id
-car (1) → cardetails (1)
-Each car has one details record.
+car (1) → detail (1)
+Each car has one detail record.
 car (many) ↔ feature (many) via car_feature
 car (1) → service_visit (many)
 A car can have many service visits.
 
-4) cardetails
+4) detail
 Meaning: Stores additional technical/registration details for a car.
 This is a 1-to-1 extension table for car.
 Main fields:
 car_id → FK to car.id + UNIQUE (ensures 1-1)
 engine_number, registration_code (unique), fuel_type, etc.
 Relations:
-cardetails (1) → car (1) via car_id
-One car has exactly one car details row.
+detail (1) → car (1) via car_id
+One car has exactly one detail row.
 
 5) service_visit
 Meaning: Stores maintenance/service history for cars.
@@ -124,7 +124,7 @@ Summary of Relations (Simple)
 
 Brand 1 → Many Models
 Model 1 → Many Cars
-Car 1 → 1 CarDetails
+Car 1 → 1 Detail
 Car 1 → Many ServiceVisits
 ServiceVisit Many ↔ Many Parts (via service_part)
 Car Many ↔ Many Features (via car_feature)

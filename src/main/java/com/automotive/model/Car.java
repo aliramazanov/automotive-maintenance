@@ -18,10 +18,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "model_id", nullable = false)
-    private Model model;
-
     @Column(nullable = false, length = 20)
     private String vin;
 
@@ -34,8 +30,12 @@ public class Car {
     @Column(name = "production_year")
     private Integer productionYear;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "model_id", nullable = false)
+    private Model model;
+
     @OneToOne(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
-    private CarDetails carDetails;
+    private Detail detail;
 
     @ManyToMany
     @JoinTable(

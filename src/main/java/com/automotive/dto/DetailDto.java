@@ -1,6 +1,6 @@
 package com.automotive.dto;
 
-public record CarDetailsDto(
+public record DetailDto(
         Integer id,
         String engineNumber,
         String registrationCode,
@@ -10,4 +10,3 @@ public record CarDetailsDto(
         String engineCapacity
 ) {
 }
-

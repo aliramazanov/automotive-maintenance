@@ -30,7 +30,6 @@ public class Feature {
     @Column(length = 255)
     private String category;
 
-    // Optional reverse mapping
     @ManyToMany(mappedBy = "features", fetch = FetchType.LAZY)
     private List<Car> cars;
 }

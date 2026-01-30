@@ -40,14 +40,14 @@ create table if not exists car
     production_year     integer
 );
 
-create table if not exists cardetails
+create table if not exists detail
 (
     id                integer generated always as identity
-        constraint cardetails_pkey primary key,
+        constraint detail_pkey primary key,
 
     car_id            integer      not null
-        constraint fk_car_details_car references car (id)
-        constraint uc_cardetails_car unique,
+        constraint fk_detail_car references car (id)
+        constraint uc_detail_car unique,
 
     engine_number     varchar(20)  not null,
 
@@ -180,8 +180,8 @@ select (i % 300) + 1,
        2000 + (i % 25)
 from generate_series(1, 500) as s(i);
 
--- CarDetails
-insert into cardetails (car_id, engine_number, registration_code, fuel_type, engine_capacity, color, insurance_number)
+-- Details
+insert into detail (car_id, engine_number, registration_code, fuel_type, engine_capacity, color, insurance_number)
 select c.id,
        left('ENG' || md5(c.id::text), 20),
        lpad('RC' || c.id::text, 20, '0'),

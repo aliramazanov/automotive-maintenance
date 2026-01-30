@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-schema-car-service
+      author: Ali Ramazanov
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS car_service

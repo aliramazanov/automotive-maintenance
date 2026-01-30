@@ -8,7 +8,6 @@ public record ModelDto(
         String name,
         String category,
         Integer yearFrom,
-        Integer yearTo) {
-
+        Integer yearTo
+) {
 }
-

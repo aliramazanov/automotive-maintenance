@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-car
+      author: Ali Ramazanov
+      changes:
+        - createTable:
+            tableName: car
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: vin
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: registration_number
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: mileage_km
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: production_year
+                  type: int
+
+              - column:
+                  name: model_id
+                  type: int
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: car
+            baseColumnNames: model_id
+            constraintName: fk_car_model
+            referencedTableName: model
+            referencedColumnNames: id

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-brand
+      author: Ali Ramazanov
+      changes:
+        - createTable: 
+            tableName: brand
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                  autoIncrement: true
+                  incrementBy: 1
+
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: country
+                  type: varchar(255)
+
+              - column:
+                  name: founded_year
+                  type: int
+
+              - column:
+                  name: trigger_column
+                  type: varchar(200)

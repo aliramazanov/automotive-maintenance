@@ -2,14 +2,17 @@ package com.automotive.dto;
 
 import java.util.List;
 
-public record CarDto(
+public record RespCarDto(
         Integer id,
         String vin,
         String registrationNumber,
         Integer mileageKm,
         Integer productionYear,
         Integer modelId,
-        CarDetailsDto carDetails,
-        List<Integer> featureIds
+        String modelName,
+        Integer brandId,
+        String brandName,
+        DetailDto detail,
+        List<FeatureDto> features
 ) {
 }

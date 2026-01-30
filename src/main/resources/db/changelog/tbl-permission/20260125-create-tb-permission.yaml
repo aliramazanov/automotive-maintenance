@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-permission
+      author: Ali Ramazanov
+      changes:
+        - createTable:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: http_method
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: path_pattern
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: permission_code
+                  type: varchar(100)
+                  constraints:
+                    nullable: false

@@ -6,6 +6,7 @@ import com.automotive.service.BrandService;
 import com.automotive.validation.BrandGroupA;
 import com.automotive.validation.BrandGroupB;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,34 +14,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/brands")
+@RequiredArgsConstructor
 public class BrandController {
 
     private final BrandService brandService;
 
-    public BrandController(BrandService brandService) {
-        this.brandService = brandService;
-    }
-
-    @GetMapping("/brands")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping
     public List<RespBrandDto> getBrands() {
         return brandService.getBrands();
     }
 
-    @GetMapping("/brands/by-id")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public RespBrandDto getBrandById(@RequestParam(value = "id") Integer id) {
+    @GetMapping("/{id}")
+    public RespBrandDto getBrandById(@PathVariable Integer id) {
         return brandService.getBrandById(id);
     }
 
-    @PostMapping("/brands")
-    public void addBrand(@RequestBody @Validated(value = BrandGroupA.class) @Valid ReqBrandDto reqBrandDto) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addBrand(@RequestBody @Validated(BrandGroupA.class) @Valid ReqBrandDto reqBrandDto) {
         brandService.addBrand(reqBrandDto);
     }
 
-    @PostMapping("/brands/groupb")
-    public void addBrandGroupB(@RequestBody @Validated(value = BrandGroupB.class) @Valid ReqBrandDto reqBrandDto) {
+    @PostMapping("/groupb")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addBrandGroupB(@RequestBody @Validated(BrandGroupB.class) @Valid ReqBrandDto reqBrandDto) {
         brandService.addBrand(reqBrandDto);
+    }
+
+    @PutMapping("/{id}")
+    public void updateBrand(@PathVariable Integer id, @Valid @RequestBody ReqBrandDto reqBrandDto) {
+        brandService.updateBrand(id, reqBrandDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBrand(@PathVariable Integer id) {
+        brandService.deleteBrandById(id);
     }
 }

@@ -11,9 +11,9 @@ public interface BrandService {
 
     RespBrandDto getBrandById(int id);
 
-    void addBrand(ReqBrandDto car);
+    void addBrand(ReqBrandDto brandDto);
 
     void deleteBrandById(int id);
 
-    void updateBrand(int id, ReqBrandDto carDto);
+    void updateBrand(int id, ReqBrandDto brandDto);
 }

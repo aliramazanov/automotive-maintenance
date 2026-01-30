@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-service-part
+      author: Ali Ramazanov
+      changes:
+        - createTable:
+            tableName: service_part
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: service_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: part_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: service_part
+            baseColumnNames: service_id
+            constraintName: fk_service_part_service_visit
+            referencedTableName: service_visit
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: service_part
+            baseColumnNames: part_id
+            constraintName: fk_service_part_part
+            referencedTableName: part
+            referencedColumnNames: id

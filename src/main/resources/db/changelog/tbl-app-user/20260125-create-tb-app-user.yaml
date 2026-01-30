@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tbl-app-user
+      author: Ali Ramazanov
+      changes:
+        - createTable:
+            tableName: app_user
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: full_name
+                  type: varchar(100)
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+              - column:
+                  name: password_hash
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValueBoolean: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp

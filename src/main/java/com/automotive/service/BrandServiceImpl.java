@@ -8,6 +8,7 @@ import com.automotive.exception.CarException;
 import com.automotive.model.Brand;
 import com.automotive.model.Model;
 import com.automotive.repository.BrandRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,49 +16,50 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
-
-    public BrandServiceImpl(BrandRepository brandRepository) {
-        this.brandRepository = brandRepository;
-    }
 
     @Override
     @Transactional(readOnly = true)
     public List<RespBrandDto> getBrands() {
         return brandRepository.findAll()
                 .stream()
-                .map(BrandServiceImpl::buildBrand)
+                .map(BrandServiceImpl::toDto)
                 .toList();
     }
-
 
     @Override
     @Transactional(readOnly = true)
     public RespBrandDto getBrandById(int id) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new CarException(CarErrorEnum.BRAND_NOT_FOUND));
-        return buildBrand(brand);
+        return toDto(brand);
     }
 
     @Override
     @Transactional
     public void addBrand(ReqBrandDto brandDto) {
-        var brand = Brand.builder()
+        Brand brand = Brand.builder()
                 .name(brandDto.name())
                 .country(brandDto.country())
                 .foundedYear(brandDto.foundedYear())
                 .build();
-        var models = brandDto.models().stream()
-                .map(modelDto -> Model.builder()
-                        .brand(brand)
-                        .category(modelDto.category())
-                        .name(modelDto.name())
-                        .yearFrom(modelDto.yearFrom())
-                        .yearTo(modelDto.yearTo())
-                        .build()).toList();
-        brand.setModels(models);
+
+        if (brandDto.models() != null) {
+            List<Model> models = brandDto.models().stream()
+                    .map(modelDto -> Model.builder()
+                            .brand(brand)
+                            .category(modelDto.category())
+                            .name(modelDto.name())
+                            .yearFrom(modelDto.yearFrom())
+                            .yearTo(modelDto.yearTo())
+                            .build())
+                    .toList();
+            brand.setModels(models);
+        }
+
         brandRepository.save(brand);
     }
 
@@ -66,10 +68,8 @@ public class BrandServiceImpl implements BrandService {
     public void deleteBrandById(int id) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new CarException(CarErrorEnum.BRAND_NOT_FOUND));
-
         brandRepository.delete(brand);
     }
-
 
     @Override
     @Transactional
@@ -78,10 +78,11 @@ public class BrandServiceImpl implements BrandService {
                 .orElseThrow(() -> new CarException(CarErrorEnum.BRAND_NOT_FOUND));
         brand.setName(brandDto.name());
         brand.setCountry(brandDto.country());
+        brand.setFoundedYear(brandDto.foundedYear());
         brandRepository.save(brand);
     }
 
-    private static RespBrandDto buildBrand(Brand brand) {
+    private static RespBrandDto toDto(Brand brand) {
         List<ModelDto> models = brand.getModels() == null
                 ? List.of()
                 : brand.getModels().stream()
@@ -102,6 +103,4 @@ public class BrandServiceImpl implements BrandService {
                 models
         );
     }
-
-
 }
