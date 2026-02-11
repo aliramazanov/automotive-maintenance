@@ -1,9 +1,12 @@
 package com.automotive.dto;
 
+import com.automotive.annotation.LogIgnore;
+
 import java.util.List;
 
 public record RespCarDto(
         Integer id,
+        @LogIgnore
         String vin,
         String registrationNumber,
         Integer mileageKm,

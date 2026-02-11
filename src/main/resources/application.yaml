@@ -39,3 +39,8 @@ spring:
     change-log: classpath:db/changelog/db.changelog.yaml
     default-schema: ${SCHEMA:car_service}
     liquibase-schema: public
+
+jwt:
+  secret: ${JWT_SECRET:automotive-maintenance-jwt-signing-key-2026}
+  access-exp: 3600000
+  refresh-exp: 86400000
